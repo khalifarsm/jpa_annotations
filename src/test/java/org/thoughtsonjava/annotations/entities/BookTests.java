@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.thoughtsonjava.annotations.dao.BookRepository;
 
+import java.time.LocalDate;
+
 @SpringBootTest
 class BookTests {
 
@@ -15,6 +17,7 @@ class BookTests {
 	void testSave() {
 		Book book = new Book();
 		book.setTitle("testBook");
+		book.setPublishingDate(LocalDate.now());
 		Long savedBookId = bookRepository.save(book).getId();
 
 		assert(bookRepository.existsById(savedBookId));
