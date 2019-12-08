@@ -11,15 +11,10 @@
         <class>org.thoughtsonjava.annotations.entities.Publisher</class>
         <class>org.thoughtsonjava.annotations.entities.Book</class>
         <properties>
-            <!-- Driver for DB database -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-            <!-- URL for DB -->
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/books" />
-            <!-- Username -->
             <property name="javax.persistence.jdbc.user" value="root" />
-            <!-- Password -->
             <property name="javax.persistence.jdbc.password" value="" />
-
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="javax.persistence.sql-load-script-source" value="META-INF/data.sql"/>
         </properties>
