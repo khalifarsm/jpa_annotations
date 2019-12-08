@@ -42,17 +42,6 @@ class BookTests {
 			ex.printStackTrace();
 			assert false;
 		}
-		/*
-
-
-		Long savedBookId = bookRepository.save(book).getId();
-
-		assert(bookRepository.existsById(savedBookId));
-		Book b = bookRepository.findById(savedBookId).orElse(null);
-
-		assert (b != null);
-		assert (b.getTitle().equals("testBook"));
-		assert (b.getPublisher().getName().equals(publisher.getName()));*/
 	}
 
 }
