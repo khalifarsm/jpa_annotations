@@ -1,28 +1,31 @@
 package org.thoughtsonjava.annotations.entities;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.thoughtsonjava.annotations.dao.AuthorRepository;
-import org.thoughtsonjava.annotations.dao.BookRepository;
 
-@SpringBootTest
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
 class AuthorTests {
-
-	@Autowired
-	AuthorRepository authorRepository;
 
 	@Test
 	void testSave() {
-		Author author = new Author();
-		author.setName("testAuthor");
-		Long savedAuthorId = authorRepository.save(author).getId();
+		EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
+				.createEntityManagerFactory("annotations");
+		EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+		EntityTransaction et;
+		try {
+			et = em.getTransaction();
+			et.begin();
+			Author author = new Author();
+			author.setName("testAuthor");
 
-		assert(authorRepository.existsById(savedAuthorId));
-		Author a = authorRepository.findById(savedAuthorId).orElse(null);
-
-		assert (a != null);
-		assert (a.getName().equals("testAuthor"));
+			em.persist(author);
+			et.commit();
+		}catch (Exception ex){
+			assert false;
+		}
 	}
 
 }

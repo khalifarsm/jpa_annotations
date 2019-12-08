@@ -1,44 +1,49 @@
 package org.thoughtsonjava.annotations.entities;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.thoughtsonjava.annotations.dao.AuthorRepository;
-import org.thoughtsonjava.annotations.dao.BookRepository;
-import org.thoughtsonjava.annotations.dao.PublisherRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 
-@SpringBootTest
 class BookTests {
-
-	@Autowired
-	BookRepository bookRepository;
-
-	@Autowired
-	PublisherRepository publisherRepository;
-
-	@Autowired
-	AuthorRepository authorRepository;
 
 	@Test
 	void testSave() {
-		Author author = new Author();
-		author.setName("testAuthor");
-		author = authorRepository.save(author);
+		EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
+				.createEntityManagerFactory("annotations");
+		EntityManager em = ENTITY_MANAGER_FACTORY.createEntityManager();
+		EntityTransaction et;
+		try {
+			et = em.getTransaction();
+			et.begin();
 
-		Publisher publisher =  new Publisher();
-		publisher.setName("p");
-		publisher = publisherRepository.save(publisher);
+			Author author = new Author();
+			author.setName("a");
+			em.persist(author);
 
-		Book book = new Book();
-		book.setTitle("testBook");
-		book.setPublishingDate(LocalDate.now());
-		book.setPublisher(publisher);
-		book.setAuthors(new HashSet<>());
-		book.getAuthors().add(author);
+			Publisher publisher =  new Publisher();
+			publisher.setName("p");
+			em.persist(publisher);
+
+			Book book = new Book();
+			book.setTitle("testBook");
+			book.setPublishingDate(LocalDate.now());
+			book.setPublisher(publisher);
+			book.setAuthors(new HashSet<>());
+			book.getAuthors().add(author);
+
+			em.persist(book);
+			et.commit();
+		}catch (Exception ex){
+			ex.printStackTrace();
+			assert false;
+		}
+		/*
+
 
 		Long savedBookId = bookRepository.save(book).getId();
 
@@ -47,7 +52,7 @@ class BookTests {
 
 		assert (b != null);
 		assert (b.getTitle().equals("testBook"));
-		assert (b.getPublisher().getName().equals(publisher.getName()));
+		assert (b.getPublisher().getName().equals(publisher.getName()));*/
 	}
 
 }
